@@ -10,7 +10,7 @@ import java.util.List;
 public class EventRepositoryFileImpl implements EventRepository {
 
     private Long generatedId = 1L;
-    private String fileName;
+    private final String fileName;
 
     public EventRepositoryFileImpl(String fileName) {
         this.fileName = fileName;
