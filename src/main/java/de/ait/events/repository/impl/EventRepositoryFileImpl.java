@@ -28,7 +28,7 @@ public class EventRepositoryFileImpl implements EventRepository {
         } catch (IOException e){
             throw new IllegalStateException("Problem with file." + e.getMessage());
         }
-        generatedId++;
+//        generatedId++;
 
     }
 
