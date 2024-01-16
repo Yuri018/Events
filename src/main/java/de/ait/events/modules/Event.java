@@ -23,6 +23,11 @@ public class Event {
         this.date = date;
     }
 
+    public Event(String description, String date) {
+        this.description = description;
+        this.date = LocalDate.parse(date);
+    }
+
     public long getId() {
         return id;
     }

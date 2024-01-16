@@ -39,4 +39,18 @@ public class EventController {
         List<Event> events = eventService.getAllEvents();
         System.out.println(events);
     }
+
+    public void updateEvent() {
+        System.out.println("Input ID: ");
+        Long idForUpdate = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.println("Input description: ");
+        String newDescription = scanner.nextLine();
+
+        System.out.println("Input date:  ");
+        LocalDate newDate = LocalDate.parse(scanner.nextLine());
+
+        eventService.updateEvent(idForUpdate, newDescription, newDate);
+    }
 }

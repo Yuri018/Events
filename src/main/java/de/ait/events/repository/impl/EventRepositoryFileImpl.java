@@ -21,7 +21,7 @@ public class EventRepositoryFileImpl implements EventRepository {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))){
             event.setId(findAll().size() + generatedId);//получаем длину списка юзеров и к этой цифре прибавляется 1
 
-            writer.write(event.getId() + ", " + event.getDescription() + "," + event.getDate());
+            writer.write(event.getId() + "," + event.getDescription() + "," + event.getDate());
             writer.newLine();//переход на новую строку
             writer.flush();
 
@@ -34,11 +34,12 @@ public class EventRepositoryFileImpl implements EventRepository {
 
     @Override
     public void deleteById(Long id) {
-
-    }
-
-    @Override
-    public void updateById(Long id) {
+        List<Event> events = findAll();
+        Event eventForDelete = events.stream()
+                .filter(event -> event.getId() == id)
+                .findFirst()
+                .orElse(null);
+        events.remove(eventForDelete);
 
     }
 
@@ -58,6 +59,29 @@ public class EventRepositoryFileImpl implements EventRepository {
 
         } catch (IOException e){
             throw new IllegalStateException("Problem with file.");
+        }
+    }
+
+    @Override
+    public void update(Event eventUpdate) {
+        List<Event> events = findAll();
+        Event eventForUpdate = events.stream()
+                .filter(event -> event.getId() == eventUpdate.getId())
+                .findFirst()
+                .orElse(null);
+
+        System.out.println(eventForUpdate);
+
+        events.remove(eventForUpdate);//здесь ошибка
+        events.add(eventUpdate);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
+            for (Event e: events){
+                writer.write(e.getId() + "," + e.getDescription() + "," + e.getDate());
+                writer.newLine();
+            }
+        } catch (IOException e){
+            throw new IllegalArgumentException("Problem with file." + e.getMessage());
         }
     }
 

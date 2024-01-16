@@ -38,4 +38,21 @@ public class EventServiceImpl implements EventService {
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
+
+    public void updateEvent(Long idForUpdate, String newDescription, LocalDate newDate) {
+        List<Event> events = eventRepository.findAll();
+        Event eventForUpdate = events.stream().filter(event -> event.getId() == idForUpdate)
+                .findFirst().orElse(null);
+        if (eventForUpdate == null){
+            throw new IllegalArgumentException("Event with ID <" + idForUpdate + "> not found");
+        }
+        if (!newDescription.isBlank()){
+            eventForUpdate.setDescription(newDescription);
+        }
+        if (!newDate.isEqual(newDate)){
+            eventForUpdate.setDate(newDate);
+        }
+
+        eventRepository.update(eventForUpdate);
+    }
 }

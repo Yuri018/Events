@@ -29,6 +29,7 @@ public class Main {
             switch (command) {
                 case "add Event" -> eventController.addEvent();
                 case "all Events" -> eventController.getAllEvents();
+                case "update Event" -> eventController.updateEvent();
                 case "exit" -> isRun = false;
             }
         }
