@@ -8,5 +8,7 @@ import java.util.List;
 public interface EventService {
     Event addEvent(String description, LocalDate date);
 
+    void updateEvent(Long idForUpdate, String newDescription, LocalDate newDate);
+
     List<Event> getAllEvents();
 }

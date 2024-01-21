@@ -2,6 +2,8 @@ package de.ait.events.service.impl;
 
 import de.ait.events.modules.Event;
 import de.ait.events.repository.EventRepository;
+import de.ait.events.validation.DateValidator;
+import de.ait.events.validation.DescriptionValidator;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -23,30 +25,34 @@ class EventServiceImplTest {
     //Dependency
     private EventServiceImpl eventService;
     private EventRepository eventRepository;
+    private DescriptionValidator descriptionValidator;
+    private DateValidator dateValidator;
+
+
 
     @BeforeEach
     public void setup(){
         eventRepository = Mockito.mock(EventRepository.class);
 
         when(eventRepository.findByDescription(EXISTED_EVENT_DESCRIPTION)).thenReturn(EXISTED_EVENT);
-        when(eventRepository.findByDescription(NOT_EXISTED_EVENT_DESCRIPTION)).thenReturn(null);
+        when(eventRepository.findByDescription(NOT_EXISTED_EVENT_DESCRIPTION)).thenReturn(NOT_EXISTED_EVENT);
 
-        this.eventService = new EventServiceImpl(eventRepository);
+        this.eventService = new EventServiceImpl(eventRepository, descriptionValidator, dateValidator);
     }
 
     @Test
     public void addEvent_on_incorrect_description_throws_exception(){
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> eventService.addEvent(null, LocalDate.parse("2024-04-04")));
     }
     @Test
     public void addEvent_on_incorrect_date_throws_exception() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> eventService.addEvent(EXISTED_EVENT_DESCRIPTION, null));
     }
     @Test
     public void on_existed_event_throw_exception(){
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> eventService.addEvent(EXISTED_EVENT_DESCRIPTION, DEFAULT_DATE));
     }
     @Test

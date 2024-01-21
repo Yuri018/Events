@@ -8,14 +8,13 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.nio.file.Files.deleteIfExists;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("EventRepositoryFileImpl is working   ")
 @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
 class EventRepositoryFileImplTest {
 
-    private static final String TEMP_EVENTS_FILE_NAME = "event_test.txt";
+    private static String TEMP_EVENTS_FILE_NAME = "C:\\Users\\AIT TR Student\\IdeaProjects\\Events\\event_test.txt";
     private EventRepositoryFileImpl eventRepository;
 
     @BeforeEach
@@ -26,7 +25,7 @@ class EventRepositoryFileImplTest {
 
     @AfterEach
     public void tearDown(){
-        deleteFileAfterTest(TEMP_EVENTS_FILE_NAME);
+        deleteFileAfterTest();
     }
     @DisplayName("save event")
     @Nested
@@ -67,8 +66,8 @@ class EventRepositoryFileImplTest {
         }
     }
 
-    private void deleteFileAfterTest(String tempEventsFileName) {
-        File file = new File(tempEventsFileName);
+    private void deleteFileAfterTest() {
+        File file = new File(TEMP_EVENTS_FILE_NAME);
         deleteIfExists(file);
     }
 

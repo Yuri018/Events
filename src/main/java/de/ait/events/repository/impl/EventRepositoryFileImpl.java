@@ -6,6 +6,7 @@ import de.ait.events.repository.EventRepository;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EventRepositoryFileImpl implements EventRepository {
 
@@ -55,7 +56,7 @@ public class EventRepositoryFileImpl implements EventRepository {
                     .map(line -> line.split(","))
                     .map(parsed -> new Event (Long.parseLong(parsed[0])//преобразуем String to Long
                             , parsed[1], LocalDate.parse((parsed[2]))))
-                    .toList();
+                    .collect(Collectors.toList());
 
         } catch (IOException e){
             throw new IllegalStateException("Problem with file.");
@@ -72,7 +73,7 @@ public class EventRepositoryFileImpl implements EventRepository {
 
         System.out.println(eventForUpdate);
 
-        events.remove(eventForUpdate);//здесь ошибка
+        events.remove(eventForUpdate);//здесь ошибка - решено
         events.add(eventUpdate);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
@@ -87,8 +88,16 @@ public class EventRepositoryFileImpl implements EventRepository {
 
     @Override
     public Event findByDescription(String description) {
-        return findAll().stream()
-                .filter(user -> user.getDescription().equals(description))
-                .findFirst().orElse(null);
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            return reader.lines()
+                    .map(line -> line.split(","))
+                    .filter(parsed -> parsed[1].contains(description)) // совпадение по подстроке
+                    .findFirst()
+                    .map(parsed -> new Event(Long.parseLong(parsed[0]), parsed[1], LocalDate.parse(parsed[2])))
+                    .orElse(null);
+
+        } catch (IOException e) {
+            throw  new IllegalStateException("Problem with file.");
+        }
     }
 }

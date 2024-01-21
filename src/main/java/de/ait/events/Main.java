@@ -4,6 +4,10 @@ import de.ait.events.controllers.EventController;
 import de.ait.events.repository.EventRepository;
 import de.ait.events.repository.impl.EventRepositoryFileImpl;
 import de.ait.events.service.impl.EventServiceImpl;
+import de.ait.events.validation.DateValidator;
+import de.ait.events.validation.DescriptionValidator;
+import de.ait.events.validation.impl.DateNotEmptyValidatorImpl;
+import de.ait.events.validation.impl.DescriptionNotEmptyValidatorImpl;
 
 import java.util.Scanner;
 
@@ -16,8 +20,11 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+
+        DescriptionValidator descriptionValidator = new DescriptionNotEmptyValidatorImpl();
+        DateValidator dateValidator = new DateNotEmptyValidatorImpl();
         EventRepository eventRepository = new EventRepositoryFileImpl(FILE_NAME);
-        EventServiceImpl eventService = new EventServiceImpl(eventRepository);
+        EventServiceImpl eventService = new EventServiceImpl(eventRepository, descriptionValidator, dateValidator);
         EventController eventController = new EventController(scanner, eventService);
 
         boolean isRun = true;

@@ -1,6 +1,7 @@
 package de.ait.events.controllers;
 
 import de.ait.events.modules.Event;
+import de.ait.events.service.EventService;
 import de.ait.events.service.impl.EventServiceImpl;
 
 import java.time.LocalDate;
@@ -11,9 +12,9 @@ import java.util.Scanner;
 public class EventController {
 
     private final Scanner scanner;
-    private final EventServiceImpl eventService;
+    private final EventService eventService;
 
-    public EventController(Scanner scanner, EventServiceImpl eventService) {
+    public EventController(Scanner scanner, EventService eventService) {
         this.scanner = scanner;
         this.eventService = eventService;
     }
